@@ -229,13 +229,6 @@ class MainWindow(QMainWindow):
 
 
 
-
-
-
-
-
-
-
 app=QApplication([])
 obj=MainWindow()
 obj.show()
