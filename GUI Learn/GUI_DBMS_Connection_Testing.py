@@ -1,3 +1,5 @@
+from copyreg import constructor
+
 import mysql.connector
 
 import sys
@@ -19,7 +21,7 @@ class InteractiveWindow(QWidget):
     def setup_ui(self):
         layout = QVBoxLayout()
 
-        self.label = QLabel("Choose a course:")
+        self.label = QLabel("Choose a Data Base:")
         self.label.setFont(QFont("Arial", 12))
         layout.addWidget(self.label)
 
@@ -31,6 +33,18 @@ class InteractiveWindow(QWidget):
         #     "Frontend Development"
         # ])
         layout.addWidget(self.dropdown)
+
+        self.label = QLabel("Choose a Table")
+        self.label.setFont(QFont("Arial", 12))
+        layout.addWidget(self.label)
+        self.dropdown2 = QComboBox()
+        layout.addWidget(self.dropdown2)
+
+        self.label = QLabel("Chose Your data")
+        self.label.setFont(QFont("Arial", 12))
+        layout.addWidget(self.label)
+        self.dropdown3 = QComboBox()
+        layout.addWidget(self.dropdown3)
 
         # Create Button
         self.button = QPushButton("Show Selection")
@@ -53,6 +67,31 @@ class InteractiveWindow(QWidget):
 
         selected = self.dropdown.currentText()
         QMessageBox.information(self, "Selection", f"You selected: {selected}")
+        database = selected
+        mydb = mysql.connector.connect(host="localhost", user="root", password="root@123",database=database)
+        cur = mydb.cursor()
+        cur.execute("show Tables")
+        data = cur.fetchall()
+        print("table data is = ",data)
+        li_of_database=[]
+        for i in data:
+            print(i)
+            li_of_database.append(i[0])
+        print(li_of_database)
+        self.dropdown2.addItems(li_of_database)
+
+        table = self.dropdown2.currentText()
+        query= "select * from "+table
+        cur.execute(query)
+        data = cur.fetchall()
+        print("table data is = ", data)
+        li=[]
+        for i in data:
+            li.append(i[2])
+
+        print(li)
+        self.dropdown3.addItems(li)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
