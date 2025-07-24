@@ -117,27 +117,29 @@
 #
 # if __name__ == "__main__":
 #     main()
+#
+# from PyQt6.QtWidgets import QApplication, QMainWindow
+# from PyQt6.QtGui import QGuiApplication
+#
+# import sys
+#
+# class MainWindow(QMainWindow):
+#     def __init__(self):
+#         super().__init__()
+#
+#         # Get the screen size
+#         screen = QGuiApplication.primaryScreen()
+#         size = screen.availableGeometry()
+#         width = size.width()
+#         height = size.height()
+#
+#         # Set the window size to screen size
+#         self.setGeometry(0, 0, width, height)
+#         self.setWindowTitle("Full Screen Window")
+#
+# app = QApplication(sys.argv)
+# window = MainWindow()
+# window.show()
+# sys.exit(app.exec())
 
-from PyQt6.QtWidgets import QApplication, QMainWindow
-from PyQt6.QtGui import QGuiApplication
 
-import sys
-
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-
-        # Get the screen size
-        screen = QGuiApplication.primaryScreen()
-        size = screen.availableGeometry()
-        width = size.width()
-        height = size.height()
-
-        # Set the window size to screen size
-        self.setGeometry(0, 0, width, height)
-        self.setWindowTitle("Full Screen Window")
-
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-sys.exit(app.exec())
