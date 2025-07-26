@@ -52,7 +52,7 @@ class InteractiveWindow(QWidget):
         self.dropbox1 = QComboBox()
         self.dropbox1.setPlaceholderText("select your database")
         layout.addWidget(self.dropbox1)
-        self.dropbox1.currentTextChanged.connect(self.load_tables)
+        # self.dropbox1.currentTextChanged.connect(self.load_tables)
 
         self.label2 = QLabel("choose your table")
         layout.addWidget(self.label2)
@@ -60,7 +60,7 @@ class InteractiveWindow(QWidget):
         self.dropbox2 = QComboBox()
         self.dropbox2.setPlaceholderText("Select your table")
         layout.addWidget(self.dropbox2)
-        self.dropbox2.currentTextChanged.connect(self.load_columns)
+        # self.dropbox2.currentTextChanged.connect(self.load_columns)
 
         self.label3 = QLabel("choose column")
         layout.addWidget(self.label3)
@@ -69,9 +69,9 @@ class InteractiveWindow(QWidget):
         self.dropbox3.setPlaceholderText("select your column")
         layout.addWidget(self.dropbox3)
 
-        self.btn = QPushButton("Show Selection")
-        layout.addWidget(self.btn)
-        self.btn.clicked.connect(self.btn_fn)
+        # self.btn = QPushButton("Show Selection")
+        # layout.addWidget(self.btn)
+        # self.btn.clicked.connect(self.btn_fn)
 
 
     def load_databases(self):
@@ -83,30 +83,30 @@ class InteractiveWindow(QWidget):
         db_name = self.dropbox1.currentText()
 
 
-    def load_tables(self, db_name):
-        self.db_connection = mysql.connector.connect(
-            host="localhost",user="root",password="7266",database=db_name
-        )
-        cur = self.db_connection.cursor()
-        cur.execute("SHOW TABLES")
-        tables = [tbl[0] for tbl in cur.fetchall()]
-        self.dropbox2.clear()
-        self.dropbox2.addItems(tables)
+    # def load_tables(self, db_name):
+    #     self.db_connection = mysql.connector.connect(
+    #         host="localhost",user="root",password="7266",database=db_name
+    #     )
+    #     cur = self.db_connection.cursor()
+    #     cur.execute("SHOW TABLES")
+    #     tables = [tbl[0] for tbl in cur.fetchall()]
+    #     self.dropbox2.clear()
+    #     self.dropbox2.addItems(tables)
+    #
+    #
+    # def load_columns(self, table_name):
+    #     cur = self.db_connection.cursor()
+    #     cur.execute(f"SHOW COLUMNS FROM {table_name}")
+    #     columns = [col[0] for col in cur.fetchall()]
+    #     self.dropbox3.clear()
+    #     self.dropbox3.addItems(columns)
 
-
-    def load_columns(self, table_name):
-        cur = self.db_connection.cursor()
-        cur.execute(f"SHOW COLUMNS FROM {table_name}")
-        columns = [col[0] for col in cur.fetchall()]
-        self.dropbox3.clear()
-        self.dropbox3.addItems(columns)
-
-    def btn_fn(self, column_name, db_name, table_name=None):
-        conn = mysql.connector.connect(host="localhost", user="root", password="7266", database=db_name)
-        cur = conn.cursor()
-        cur.execute(f"SELECT {column_name} FROM {table_name}")
-        data = [dat[0] for dat in cur.fetchall()]
-        print(data)
+    # def btn_fn(self, column_name, db_name, table_name=None):
+    #     conn = mysql.connector.connect(host="localhost", user="root", password="7266", database=db_name)
+    #     cur = conn.cursor()
+    #     cur.execute(f"SELECT {column_name} FROM {table_name}")
+    #     data = [dat[0] for dat in cur.fetchall()]
+    #     print(data)
 
 
 
