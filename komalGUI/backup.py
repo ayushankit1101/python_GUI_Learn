@@ -49,7 +49,7 @@ class InteractiveWindow(QWidget):
         layout.addWidget(self.label)
         self.dropdown3 = QComboBox()
         layout.addWidget(self.dropdown3)
-
+        self.dropdown3.currentTextChanged.connect(self.on_table_changed)
         # Create Button
         self.button = QPushButton("Show Database")
         self.button.setFont(QFont("Arial", 11))
@@ -141,3 +141,4 @@ if __name__ == "__main__":
     window = InteractiveWindow()
     window.show()
     sys.exit(app.exec())
+
