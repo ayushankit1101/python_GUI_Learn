@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QFont
 
 class InteractiveWindow(QWidget):
-    mydb = mysql.connector.connect(host="localhost", user="root", password="root@123")
+    mydb = mysql.connector.connect(host="localhost", user="root", password="7266")
     cur=mydb.cursor()
     def __init__(self):
         self.count = False
@@ -104,7 +104,7 @@ class InteractiveWindow(QWidget):
     def show2(self):
         self.dropdown2.clear()
         database = self.selected
-        mydb = mysql.connector.connect(host="localhost", user="root", password="root@123",database=database)
+        mydb = mysql.connector.connect(host="localhost", user="root", password="7266",database=database)
         cur = mydb.cursor()
         cur.execute("show Tables")
         data = cur.fetchall()
