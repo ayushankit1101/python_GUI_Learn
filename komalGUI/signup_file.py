@@ -1,6 +1,6 @@
 import mysql.connector
-from PyQt6.QtSql import userName, password
-from PyQt6.QtWidgets import QWidget, QApplication
+
+from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout
 
 
 class SignupForm(QWidget):
@@ -36,9 +36,36 @@ class SignupForm(QWidget):
                 background-color: #005fa3;
             }
         """)
+        self.setup_ui()
+
+    def setup_ui(self):
+            # vbox = QVBoxLayout()
+            # self.setLayout(vbox)
+
+            self.name_label = QLabel("Name:")
+            self.name_input = QLineEdit()
+
+            self.email_label = QLabel("Email:")
+            self.email_input = QLineEdit()
+
+            self.age_label = QLabel("Age:")
+            self.age_input = QLineEdit()
+
+            self.submit_button = QPushButton("Submit")
+            self.submit_button.clicked.connect(self.insert_data)
+
+            layout = QVBoxLayout()
+            layout.addWidget(self.name_label)
+            layout.addWidget(self.name_input)
+            layout.addWidget(self.email_label)
+            layout.addWidget(self.email_input)
+            layout.addWidget(self.age_label)
+            layout.addWidget(self.age_input)
+            layout.addWidget(self.submit_button)
+            self.setLayout(layout)
 
     def insert_data(self):
-        self.mydb=mysql.connector.connect(host="hostname",user="root",password="root@123")
+        self.mydb=mysql.connector.connect(host="hostname",user="root",password="root@123",database="test")
         self.cur=self.mydb.cursor()
         name=self.name_input.text()
         email=self.name_input.text()

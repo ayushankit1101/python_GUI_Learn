@@ -52,7 +52,7 @@ class DBMSWindow(QWidget):
         self.dropbox1 = QComboBox()
         self.dropbox1.setPlaceholderText("Select your Database")
         vbox.addWidget(self.dropbox1)
-        self.dropbox1.currentTextChanged.connect(self.load_table)
+        # self.dropbox1.currentTextChanged.connect(self.load_table)
 
         self.label2 = QLabel("Choose your Table")
         vbox.addWidget(self.label2)
@@ -68,12 +68,12 @@ class DBMSWindow(QWidget):
         self.dropbox3.setPlaceholderText("Select Your data")
         vbox.addWidget(self.dropbox3)
 
-        vbox.setAlignment(self.dropbox1, Qt.AlignmentFlag.AlignCenter)
-        vbox.setAlignment(self.label1, Qt.AlignmentFlag.AlignCenter)
-        vbox.setAlignment(self.dropbox2, Qt.AlignmentFlag.AlignCenter)
-        vbox.setAlignment(self.label2, Qt.AlignmentFlag.AlignCenter)
-        vbox.setAlignment(self.dropbox3, Qt.AlignmentFlag.AlignCenter)
-        vbox.setAlignment(self.label3, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.dropbox1, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.label1, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.dropbox2, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.label2, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.dropbox3, Qt.AlignmentFlag.AlignCenter)
+        # vbox.setAlignment(self.label3, Qt.AlignmentFlag.AlignCenter)
 
 
 
@@ -85,14 +85,14 @@ class DBMSWindow(QWidget):
         data = mycur.fetchall()
         database_list = []
         for db in data:
-            database_list.db[0])
+            database_list.append(db[0])
         self.dropbox1.addItems(database_list)
 
-    def load_table(self):
-        db_name = self.dropbox1.currentText()
-        mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database=db_name)
-        mycur = mydb.cursor()
-        mycur.execute()
+    # def load_table(self):
+    #     db_name = self.dropbox1.currentText()
+    #     mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database=db_name)
+    #     mycur = mydb.cursor()
+    #     mycur.execute()
 
 
 

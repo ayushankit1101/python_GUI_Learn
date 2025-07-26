@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QFont
 
 class InteractiveWindow(QWidget):
-    mydb = mysql.connector.connect(host="localhost", user="root", password="root@123")
+    mydb = mysql.connector.connect(host="localhost", user="root", password="7266")
     cur=mydb.cursor()
     def __init__(self):
         self.count = False
@@ -78,12 +78,12 @@ class InteractiveWindow(QWidget):
         # print(data)
         self.li_of_database=[]
         for i in data:
-            # print(i)
+        #     # print(i)
             self.li_of_database.append(i[0])
-        # print(self.li_of_database)
+        # # print(self.li_of_database)
         self.dropdown.addItems(self.li_of_database)
 
-        self.selected = self.dropdown.currentText()
+        # self.selected = self.dropdown.currentText()
         # QMessageBox.information(self, "Selection", f"You selected: {selected}")
     def on_database_changed(self):
         if(self.count == False):
@@ -102,9 +102,10 @@ class InteractiveWindow(QWidget):
         self.count2=True
 
     def show2(self):
+
         self.dropdown2.clear()
         database = self.selected
-        mydb = mysql.connector.connect(host="localhost", user="root", password="root@123",database=database)
+        mydb = mysql.connector.connect(host="localhost", user="root", password="7266",database=database)
         cur = mydb.cursor()
         cur.execute("show Tables")
         data = cur.fetchall()
@@ -119,9 +120,9 @@ class InteractiveWindow(QWidget):
         self.table = self.dropdown2.currentText()
 
     def show3(self):
-        self.dropdown3.clear()
+        # self.dropdown3.clear()
         # database = self.selected_database
-        mydb = mysql.connector.connect(host="localhost", user="root", password="root@123", database=self.selected_database)
+        mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database=self.selected_database)
         cur = mydb.cursor()
         query= "select * from "+self.selected_table
         cur.execute(query)
