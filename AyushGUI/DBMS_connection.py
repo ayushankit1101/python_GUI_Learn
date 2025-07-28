@@ -127,7 +127,7 @@ class SignupWindow(QWidget):
 
 
     def insert_data(self):
-        self.mydb = mysql.connector.connect(host="localhost",user="root",password="7266",database="test")
+        self.mydb = mysql.connector.connect(host="localhost",user="root",password="7266",database="login_info")
         self.cur = self.mydb.cursor()
         username = self.username_input.text()
         first_name = self.first_name_input.text()
