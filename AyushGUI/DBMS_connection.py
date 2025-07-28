@@ -1,5 +1,6 @@
 import mysql.connector
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QApplication, QHBoxLayout, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QApplication, QHBoxLayout, QLineEdit, QGridLayout, QComboBox, \
+    QTextEdit, QRadioButton, QPushButton
 from PyQt6.QtCore import Qt
 
 
@@ -39,42 +40,113 @@ class SignupWindow(QWidget):
 
 
     def setup_ui(self):
-        # vbox = QVBoxLayout()
-        # self.setLayout(vbox)
+        vbox = QVBoxLayout()
+        self.setLayout(vbox)
 
-        self.name_label = QLabel("Name:")
-        self.name_input = QLineEdit()
+        self.course_combo = QComboBox()
+        self.course_combo.setPlaceholderText("CHOOSE A COURSE")
+        self.course_combo.addItems(["PYTHON", "MACHINE LEARNING", "DATA SCIENCE", "FULL STACK"])
 
-        self.email_label = QLabel("Email:")
-        self.email_input = QLineEdit()
+        self.course_combo.currentTextChanged.connect(self.update_fee)
 
-        self.age_label = QLabel("Age:")
-        self.age_input = QLineEdit()
+        form_layout = QGridLayout()
 
-        self.submit_button = QPushButton("Submit")
-        self.submit_button.clicked.connect(self.insert_data)
+        form_layout.addWidget(QLabel("USERNAME"),0,0)
+        self.username_input = QLineEdit()
+        form_layout.addWidget(self.username_input,0,1)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.name_label)
-        layout.addWidget(self.name_input)
-        layout.addWidget(self.email_label)
-        layout.addWidget(self.email_input)
-        layout.addWidget(self.age_label)
-        layout.addWidget(self.age_input)
-        layout.addWidget(self.submit_button)
-        self.setLayout(layout)
+        form_layout.addWidget(QLabel("FIRST NAME"),1,0)
+        self.first_name_input = QLineEdit()
+        form_layout.addWidget(self.first_name_input,1,1)
+
+        form_layout.addWidget(QLabel("LAST NAME"),2,0)
+        self.last_name_input = QLineEdit()
+        form_layout.addWidget(self.last_name_input,2,1)
+
+        form_layout.addWidget(QLabel("MOBILE NUMBER"), 3, 0)
+        self.mobile = QLineEdit()
+        form_layout.addWidget(self.mobile, 3, 1)
+
+        form_layout.addWidget(QLabel("COURSE"),4,0)
+        form_layout.addWidget(self.course_combo,4,1)
+
+        form_layout.addWidget(QLabel("ADDRESS"),5,0)
+        self.address = QTextEdit()
+        form_layout.addWidget(self.address,5,1)
+
+        form_layout.addWidget(QLabel("TOTAL FEES"),6,0)
+        self.fee_display = QLineEdit()
+        self.fee_display.setReadOnly(True)
+        form_layout.addWidget(self.fee_display,6,1)
+
+        form_layout.addWidget(QLabel("INSTALLMENT?"), 7, 0)
+        radio_layout = QHBoxLayout()
+        self.yes_radio = QRadioButton("Yes")
+        self.no_radio = QRadioButton("No")
+        self.no_radio.setChecked(True)
+        radio_layout.addWidget(self.yes_radio)
+        radio_layout.addWidget(self.no_radio)
+        form_layout.addLayout(radio_layout, 7, 1)
+        self.yes_radio.toggled.connect(self.toggle_installment_field)
+
+        form_layout.addWidget(QLabel("INSTALLMENT AMOUNT"), 8, 0)
+        self.installment_display = QLineEdit()
+        self.installment_display.setReadOnly(True)
+        self.installment_display.setVisible(False)
+        form_layout.addWidget(self.installment_display, 8, 1)
+
+        # self.btn = QPushButton("Submit Data")
+
+        vbox.addLayout(form_layout)
+
+        btn_layout = QHBoxLayout()
+        self.btn = QPushButton("Submit Data")
+        btn_layout.addWidget(self.btn, alignment=Qt.AlignmentFlag.AlignCenter)
+        vbox.addLayout(btn_layout)
+        self.btn.clicked.connect(self.insert_data)
+
+    def update_fee(self, selected_course):
+        fee_dict = {
+            "PYTHON": "10,000",
+            "MACHINE LEARNING": "20,000",
+            "DATA SCIENCE": "25,000",
+            "FULL STACK": "30,000"
+        }
+        fee = fee_dict.get(selected_course, "")
+        self.fee_display.setText(fee)
+
+    def toggle_installment_field(self):
+        if self.yes_radio.isChecked():
+            self.installment_display.setText("7000")
+            self.installment_display.setVisible(True)
+        else:
+            self.installment_display.clear()
+            self.installment_display.setVisible(False)
+
+
+
 
     def insert_data(self):
         self.mydb = mysql.connector.connect(host="localhost",user="root",password="7266",database="test")
         self.cur = self.mydb.cursor()
-        name = self.name_input.text()
-        email = self.email_input.text()
-        age = self.age_input.text()
+        username = self.username_input.text()
+        first_name = self.first_name_input.text()
+        last_name = self.last_name_input.text()
+        mobile = self.mobile.text()
+        course = self.course_combo.currentText()
+        address = self.address.toPlainText()
+        total_fees = self.fee_display.text()
+        installment = self.installment_display.text()
 
-        query = "INSERT INTO test_table (name, email, age) VALUES (%s, %s, %s)"
-        value = (name,email,age)
+        query = ("""INSERT INTO test_table (username,first_name,last_name,mobile,course,address,total_fees,installment) VALUES
+                 (%s, %s, %s, %s, %s, %s, %s, %s)""")
+        value = (username,first_name,last_name,mobile,course,address,total_fees,installment)
+
         self.cur.execute(query,value)
+        # self.mydb.commit()
         self.mydb.commit()
+        self.cur.close()
+        self.mydb.close()
 
 
 
