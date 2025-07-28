@@ -116,7 +116,7 @@ class LoginWindow(QWidget):
     def open_signup(self):
         self.signup_window = SignupWindow(self)
         self.signup_window.show()
-
+        self.hide()
 
 
 
