@@ -123,33 +123,35 @@ class SignupWindow(QWidget):
             self.installment_display.clear()
             self.installment_display.setVisible(False)
 
-
-
-
     def insert_data(self):
-        self.mydb = mysql.connector.connect(host="localhost",user="root",password="7266",database="login_info")
-        self.cur = self.mydb.cursor()
-        username = self.username_input.text()
-        first_name = self.first_name_input.text()
-        last_name = self.last_name_input.text()
-        mobile = self.mobile.text()
-        course = self.course_combo.currentText()
-        address = self.address.toPlainText()
-        total_fees = self.fee_display.text()
-        installment = self.installment_display.text()
+        try:
+            self.mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database="login_info")
+            self.cur = self.mydb.cursor()
 
-        query = ("""INSERT INTO test_table (username,first_name,last_name,mobile,course,address,total_fees,installment) VALUES
-                 (%s, %s, %s, %s, %s, %s, %s, %s)""")
-        value = (username,first_name,last_name,mobile,course,address,total_fees,installment)
+            username = self.username_input.text()
+            first_name = self.first_name_input.text()
+            last_name = self.last_name_input.text()
+            mobile = self.mobile.text()
+            course = self.course_combo.currentText()
+            address = self.address.toPlainText()
+            total_fees = self.fee_display.text()
+            installment = self.installment_display.text()
 
-        self.cur.execute(query,value)
-        # self.mydb.commit()
-        self.mydb.commit()
-        self.cur.close()
-        self.mydb.close()
+            query = ("""INSERT INTO user_data (username, first_name, last_name, mobile_number, course, address, total_fees, installment) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""")
+            value = (username, first_name, last_name, mobile, course, address, total_fees, installment)
 
+            self.cur.execute(query, value)
+            self.mydb.commit()
 
+            self.cur.close()
+            self.mydb.close()
+            print("Data inserted successfully")
 
+        except mysql.connector.Error as err:
+            print("Error: ", err)
+        except Exception as e:
+            print("Unexpected error:", e)
 
 
 app = QApplication([])
