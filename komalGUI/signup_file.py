@@ -103,11 +103,20 @@ class SignupWindow(QWidget):
 
         vbox.addLayout(form_layout)
 
+        # btn_layout = QHBoxLayout()
+        #
+        #
+        # vbox.addLayout(btn_layout)
+        # self.btn.clicked.connect(self.insert_data)
+
+
         btn_layout = QHBoxLayout()
-        self.btn = QPushButton("Submit Data")
-        btn_layout.addWidget(self.btn, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.login_btn = QPushButton("Login")
+        self.sign_btn = QPushButton("Signup")
+        btn_layout.addWidget(self.login_btn)
+        btn_layout.addWidget(self.sign_btn)
         vbox.addLayout(btn_layout)
-        self.btn.clicked.connect(self.insert_data)
+        self.sign_btn.clicked.connect(self.insert_data)
 
     def update_fee(self, selected_course):
         fee_dict = {
