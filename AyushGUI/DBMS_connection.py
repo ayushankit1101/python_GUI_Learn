@@ -50,7 +50,7 @@ class SignupWindow(QWidget):
         self.course_combo.setPlaceholderText("CHOOSE A COURSE")
         self.course_combo.addItems(["PYTHON", "MACHINE LEARNING", "DATA SCIENCE", "FULL STACK"])
 
-        # self.course_combo.currentTextChanged.connect(self.update_fee)
+        self.course_combo.currentTextChanged.connect(self.update_fee)
 
         form_layout = QGridLayout()
 
@@ -141,7 +141,7 @@ class SignupWindow(QWidget):
 
     def insert_data(self):
         try:
-            self.mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database="login_info")
+            self.mydb = mysql.connector.connect(host="localhost", user="root", password="7266", database="user_info")
             self.cur = self.mydb.cursor()
 
             username = self.username_input.text()
@@ -152,7 +152,10 @@ class SignupWindow(QWidget):
             course = self.course_combo.currentText()
             address = self.address.toPlainText()
             total_fees = self.fee_display.text()
-            installment = self.installment_display.text()
+            if self.yes_radio.isChecked():
+                installment = self.installment_display.text()
+            else:
+                installment = "No Installment"
 
             query = ("""INSERT INTO user_data (username, password, first_name, last_name, mobile_number, course, address,
                         total_fees, installment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""")
@@ -164,11 +167,15 @@ class SignupWindow(QWidget):
             self.cur.close()
             self.mydb.close()
             print("Data inserted successfully")
+            QMessageBox.information(self, "Congrats", "You're registered successfully")
+
 
         except mysql.connector.Error as err:
             print("Error: ", err)
         except Exception as e:
             print("Unexpected error:", e)
+
+    def clear_signup_window(self):
 
 
 class LoginWindow(QWidget):
@@ -249,20 +256,39 @@ class LoginWindow(QWidget):
             data = mycur.fetchall()
             mydb.close()
             if data == []:
-                QMessageBox.information(self, "Test", "Username Not Found")
+                QMessageBox.warning(self, "Test", "Username Not Found")
             else:
                 if data[0][0] == password:
 
                     QMessageBox.information(self, "Test", "Login Success")
+                    self.new_window = BlankWindow()
+                    self.new_window.show()
+                    self.hide()
                 else:
 
-                    QMessageBox.information(self, "Test", "Password Not Matched")
+                    QMessageBox.warning(self, "Test", "Password Not Matched")
 
         except mysql.connector.Error as err:
             QMessageBox.critical(self, "Database Error", str(err))
 
-# class BlankWindow(QWidget):
-#     def __init__(self):
+
+
+
+class BlankWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("welcome")
+        self.setGeometry(100,100,200,200)
+
+        self.new_window()
+
+    def new_window(self):
+
+        vbox = QVBoxLayout()
+        self.setLayout(vbox)
+
+        self.label = QLabel("welcome")
+        vbox.addWidget(self.label)
 
 
 
