@@ -36,8 +36,33 @@ class SignupWindow(QWidget):
                         background-color: #005bb5;
                 }
         """)
-        # self.login_page()
+        self.login_page()
         self.setup_ui()
+
+
+
+    def login_page(self):
+        vbox = QVBoxLayout()
+        self.setLayout(vbox)
+
+        self.username = QLineEdit()
+        self.username.setPlaceholderText("USERNAME")
+
+        self.password = QLineEdit()
+        self.password.setPlaceholderText("PASSWORD")
+
+        vbox.addWidget(self.username)
+        vbox.addWidget(self.password)
+
+        btn_layout = QHBoxLayout()
+        self.login_btn = QPushButton("Login")
+        self.signup_btn = QPushButton("Signup")
+        btn_layout.addWidget(self.login_btn)
+        btn_layout.addWidget(self.signup_btn)
+        vbox.addLayout(btn_layout)
+
+        self.login_btn.clicked.connect(self.check_login)
+
 
 
 
@@ -115,27 +140,6 @@ class SignupWindow(QWidget):
         self.login_btn_page.clicked.connect(self.login_page)
 
 
-    def login_page(self):
-        vbox = QVBoxLayout()
-        self.setLayout(vbox)
-
-        self.username = QLineEdit()
-        self.username.setPlaceholderText("USERNAME")
-
-        self.password = QLineEdit()
-        self.password.setPlaceholderText("PASSWORD")
-
-        vbox.addWidget(self.username)
-        vbox.addWidget(self.password)
-
-        btn_layout = QHBoxLayout()
-        self.login_btn = QPushButton("Login")
-        self.signup_btn = QPushButton("Signup")
-        btn_layout.addWidget(self.login_btn)
-        btn_layout.addWidget(self.signup_btn)
-        vbox.addLayout(btn_layout)
-
-        self.login_btn.clicked.connect(self.check_login)
 
 
 
