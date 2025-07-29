@@ -1,100 +1,126 @@
-import mysql.connector
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, QMessageBox
 
-class LoginWindow(QWidget):
+from PyQt6.QtWidgets import (
+    QApplication, QWidget, QLabel, QLineEdit, QPushButton,
+    QVBoxLayout, QStackedWidget, QHBoxLayout, QMessageBox
+)
+import sys
+
+import mysql.connector
+
+
+class LoginForm(QWidget):
+    def __init__(self, stacked_widget):
+        super().__init__()
+
+
+        self.stacked_widget = stacked_widget
+
+        layout = QVBoxLayout()
+        layout.addWidget(QLabel("Login"))
+
+        self.username_input = QLineEdit()
+        self.username_input.setPlaceholderText("Username")
+        layout.addWidget(self.username_input)
+
+        self.password_input = QLineEdit()
+        self.password_input.setPlaceholderText("Password")
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        layout.addWidget(self.password_input)
+
+        login_btn = QPushButton("Login")
+        layout.addWidget(login_btn)
+        login_btn.clicked.connect(self.login_function)
+
+
+        switch_btn = QPushButton("Don't have an account? Sign Up")
+        switch_btn.clicked.connect(self.switch_to_signup)
+        layout.addWidget(switch_btn)
+
+        self.setLayout(layout)
+    def login_function(self):
+
+        mydb = mysql.connector.connect(host="localhost",user="root",password="root@123",database="final")
+        print(mydb)
+        mycur = mydb.cursor()
+        # username = "test"
+        username = self.username_input.text()
+        password = self.password_input.text()
+        # QMessageBox.information(self,"Test",username)
+        query = 'SELECT password FROM final_table WHERE username = %s'
+        mycur.execute(query, (username,))
+        data = mycur.fetchall()
+        print(data)
+
+        # print(data[0][0])
+        #
+        # if len(data)==0:
+        if  data == []:
+            QMessageBox.information(self,"Test","Username Not Found")
+        else:
+            if data[0][0]==password:
+
+                QMessageBox.information(self, "Test", "Login Success")
+            else :
+
+                QMessageBox.information(self, "Test", "Password Not Matched")
+
+
+        mydb.close()
+
+    def switch_to_signup(self):
+        self.stacked_widget.setCurrentIndex(1)
+
+class SignupForm(QWidget):
+    def __init__(self, stacked_widget):
+        super().__init__()
+        self.stacked_widget = stacked_widget
+
+        layout = QVBoxLayout()
+        layout.addWidget(QLabel("Sign Up"))
+
+        self.name_input = QLineEdit()
+        self.name_input.setPlaceholderText("Full Name")
+        layout.addWidget(self.name_input)
+
+        self.email_input = QLineEdit()
+        self.email_input.setPlaceholderText("Email")
+        layout.addWidget(self.email_input)
+
+        self.password_input = QLineEdit()
+        self.password_input.setPlaceholderText("Password")
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        layout.addWidget(self.password_input)
+
+        signup_btn = QPushButton("Sign Up")
+        layout.addWidget(signup_btn)
+
+        switch_btn = QPushButton("Already have an account? Login")
+        switch_btn.clicked.connect(self.switch_to_login)
+        layout.addWidget(switch_btn)
+
+        self.setLayout(layout)
+
+    def switch_to_login(self):
+        self.stacked_widget.setCurrentIndex(0)
+
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("SIGNUP WINDOW")
-        self.setGeometry(100,100,500,500)
-        self.setStyleSheet("""
-                QWidget {
-                        background-color: #f4f6f8;
-                        font-family: 'Segoe UI';
-                        font-size: 14px;
-                }
-                QLabel {
-                        font-weight: 600;
-                        font-family: "Segoe UI";
-                        color: #333;
-                }
-                QLineEdit, QTextEdit, QComboBox {
-                        border: 1px solid #ccc;
-                        border-radius: 6px;
-                        padding: 6px;
-                        background: #fff;
-                }
-                QPushButton {
-                        background-color: #0066cc;
-                        color: white;
-                        padding: 8px 16px;
-                        border-radius: 6px;
-                }
-                QPushButton:hover {
-                        background-color: #005bb5;
-                }
-        """)
-        self.login_page()
+        self.setWindowTitle("Login & Signup Example")
+        self.setGeometry(100, 100, 300, 200)
 
+        self.stacked_widget = QStackedWidget()
+        self.login_form = LoginForm(self.stacked_widget)
+        self.signup_form = SignupForm(self.stacked_widget)
 
-    def login_page(self):
-        vbox = QVBoxLayout()
-        self.setLayout(vbox)
+        self.stacked_widget.addWidget(self.login_form)
+        self.stacked_widget.addWidget(self.signup_form)
 
-        self.username = QLineEdit()
-        self.username.setPlaceholderText("USERNAME")
+        layout = QVBoxLayout()
+        layout.addWidget(self.stacked_widget)
+        self.setLayout(layout)
 
-        self.password = QLineEdit()
-        self.password.setPlaceholderText("PASSWORD")
-
-        vbox.addWidget(self.username)
-        vbox.addWidget(self.password)
-
-        btn_layout = QHBoxLayout()
-        self.login_btn = QPushButton("Login")
-        self.signup_btn = QPushButton("Signup")
-        btn_layout.addWidget(self.login_btn)
-        btn_layout.addWidget(self.signup_btn)
-        vbox.addLayout(btn_layout)
-
-        self.login_btn.clicked.connect(self.check_login)
-
-    def check_login(self):
-        username = self.username.text().strip()
-        password = self.password.text().strip()
-        try:
-            mydb = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="7266",
-                database="login_info"
-            )
-            mycur = mydb.cursor()
-            query = 'SELECT password FROM user_data WHERE username = "ayush123"'
-            mycur.execute(query)
-            data = mycur.fetchall()
-            print(data)
-            mydb.close()
-            if data:
-                if data[0][0]== password:
-                    self.open_main_window()
-                else:
-                    print("invalid password")
-            else:
-                QMessageBox.warning(self, "Error", "invalid Username")
-
-        except mysql.connector.Error as err:
-            QMessageBox.critical(self, "Database Error", str(err))
-
-    def open_main_window(self):
-        self.main_window = MainWindow()
-        self.main_window.show()
-        self.close()
-
-
-
-
-
-app = QApplication([])
-obj = LoginWindow()
-obj.show()
-app.exec()
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+sys.exit(app.exec())
