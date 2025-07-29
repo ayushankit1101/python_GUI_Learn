@@ -36,7 +36,7 @@ class SignupWindow(QWidget):
                         background-color: #005bb5;
                 }
         """)
-        self.login_page()
+        # self.login_page()
         self.setup_ui()
 
 
@@ -62,6 +62,7 @@ class SignupWindow(QWidget):
         vbox.addLayout(btn_layout)
 
         self.login_btn.clicked.connect(self.check_login)
+        self.signup_btn.clicked.connect(self.setup_ui)
 
 
 
@@ -137,7 +138,15 @@ class SignupWindow(QWidget):
         btn_layout.addWidget(self.signup_btn, alignment=Qt.AlignmentFlag.AlignCenter)
         vbox.addLayout(btn_layout)
         self.signup_btn.clicked.connect(self.insert_data)
-        self.login_btn_page.clicked.connect(self.login_page)
+        self.login_btn_page.clicked.connect(self.show_login)
+
+    def show_signup(self):
+        self.hide()
+        self.setup_ui.show()
+
+    def show_login(self):
+        self.hide()
+        self.show()
 
 
 
@@ -214,6 +223,9 @@ class SignupWindow(QWidget):
             print("Error: ", err)
         except Exception as e:
             print("Unexpected error:", e)
+
+
+
 
 
 app = QApplication([])
