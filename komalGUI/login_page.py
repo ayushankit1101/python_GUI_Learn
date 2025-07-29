@@ -226,7 +226,6 @@ class LoginWindow(QWidget):
         vbox.addLayout(btn_layout)
 
         self.signup_btn.clicked.connect(self.show_signup_page)
-        self.login_btn.clicked.connect(self.check_login)
 
     def show_signup_page(self):
         self.signup_page = SignupWindow()
@@ -244,25 +243,17 @@ class LoginWindow(QWidget):
                 database="login_info"
             )
             mycur = mydb.cursor()
-            query = 'SELECT password FROM user_data WHERE username = %s'
-            mycur.execute(query, (username,))
+            query = 'SELECT password FROM user_data WHERE username = "username" and password = "password"'
+            mycur.execute(query, (username,password))
             data = mycur.fetchall()
             mydb.close()
-            if data == []:
-                QMessageBox.information(self, "Test", "Username Not Found")
+            if data:
+                self.open_main_window()
             else:
-                if data[0][0] == password:
-
-                    QMessageBox.information(self, "Test", "Login Success")
-                else:
-
-                    QMessageBox.information(self, "Test", "Password Not Matched")
+                QMessageBox.warning(self, "Error", "invalid Username and Password")
 
         except mysql.connector.Error as err:
             QMessageBox.critical(self, "Database Error", str(err))
-
-# class BlankWindow(QWidget):
-#     def __init__(self):
 
 
 
