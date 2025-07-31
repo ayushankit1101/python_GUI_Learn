@@ -46,6 +46,7 @@ class SignupWindow(QWidget):
         vbox = QVBoxLayout()
         self.setLayout(vbox)
 
+
         self.course_combo = QComboBox()
         self.course_combo.setPlaceholderText("CHOOSE A COURSE")
         self.course_combo.addItems(["PYTHON", "MACHINE LEARNING", "DATA SCIENCE", "FULL STACK"])
@@ -175,7 +176,7 @@ class SignupWindow(QWidget):
         except Exception as e:
             print("Unexpected error:", e)
 
-    def clear_signup_window(self):
+    # def clear_signup_window(self):
 
 
 class LoginWindow(QWidget):
@@ -248,7 +249,7 @@ class LoginWindow(QWidget):
                 host="localhost",
                 user="root",
                 password="7266",
-                database="login_info"
+                database="user_info"
             )
             mycur = mydb.cursor()
             query = 'SELECT password FROM user_data WHERE username = %s'
@@ -279,10 +280,38 @@ class BlankWindow(QWidget):
         super().__init__()
         self.setWindowTitle("welcome")
         self.setGeometry(100,100,200,200)
+        self.setStyleSheet("""
+                    QWidget {
+                            background-color: #f4f6f8;
+                            font-family: 'Segoe UI';
+                            font-size: 14px;
+                    }
+                    QLabel {
+                            font-weight: 600;
+                            font-family: "Segoe UI";
+                            color: #333;
+                    }
+                    QLineEdit, QTextEdit, QComboBox {
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            padding: 6px;
+                            background: #fff;
+                    }
+                    QPushButton {
+                            background-color: #0066cc;
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                    }
+                    QPushButton:hover {
+                            background-color: #005bb5;
+                    }
+        """)
 
         self.new_window()
 
     def new_window(self):
+
 
         vbox = QVBoxLayout()
         self.setLayout(vbox)
