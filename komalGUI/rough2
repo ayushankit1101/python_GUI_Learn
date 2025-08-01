@@ -1,5 +1,5 @@
 import mysql.connector
-# from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit,
                              QMessageBox, QHBoxLayout, QComboBox, QTextEdit, QGridLayout, QRadioButton)
 
@@ -45,6 +45,7 @@ class SignupWindow(QWidget):
         self.course_combo.setPlaceholderText("CHOOSE A COURSE")
         self.course_combo.addItems(["PYTHON", "MACHINE LEARNING", "DATA SCIENCE", "FULL STACK"])
         self.course_combo.currentTextChanged.connect(self.update_fee)
+
         form_layout = QGridLayout()
         self.username_input = QLineEdit()
         self.password_input = QLineEdit()
@@ -262,11 +263,7 @@ class WelcomeWindow(QWidget):
 
             db = mysql.connector.connect(host="localhost", user="root", password="root@123", database="final")
             cursor = db.cursor()
-            cursor.execute(f"""
-                UPDATE final_table
-                SET {set_clause}
-                WHERE username = %s
-            """, values)
+            cursor.execute(f"UPDATE final_table SET {set_clause} WHERE username = %s", values)
             db.commit()
             db.close()
             QMessageBox.information(self, "Success", "Profile updated successfully")
@@ -284,8 +281,6 @@ class WelcomeWindow(QWidget):
                 db.commit()
                 db.close()
                 QMessageBox.information(self, "Deleted", "Account deleted successfully")
-                self.login = LoginWindow()
-                self.login.show()
                 self.close()
             except Exception as e:
                 QMessageBox.critical(self, "Delete Error", str(e))
@@ -293,6 +288,6 @@ class WelcomeWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication([])
-    win = LoginWindow()
+    win = SignupWindow()
     win.show()
     app.exec()
