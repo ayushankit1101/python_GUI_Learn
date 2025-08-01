@@ -311,6 +311,7 @@ class WelcomeWindow(QWidget):
     def logout(self):
         self.login_page = LoginWindow()
         self.login_page.show()
+
         self.close()
 
 
@@ -319,3 +320,8 @@ if __name__ == '__main__':
     window = SignupWindow()
     window.show()
     app.exec()
+
+
+
+
+
