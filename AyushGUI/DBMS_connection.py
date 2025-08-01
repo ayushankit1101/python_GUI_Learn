@@ -37,12 +37,13 @@ class SignupWindow(QWidget):
                 }
         """)
 
-        self.setup_ui()
+
+        self.signup_page()
 
 
 
 
-    def setup_ui(self):
+    def signup_page(self):
         vbox = QVBoxLayout()
         self.setLayout(vbox)
 
@@ -266,7 +267,6 @@ class LoginWindow(QWidget):
                     self.new_window.show()
                     self.hide()
                 else:
-
                     QMessageBox.warning(self, "Test", "Password Not Matched")
 
         except mysql.connector.Error as err:
@@ -316,12 +316,20 @@ class BlankWindow(QWidget):
         vbox = QVBoxLayout()
         self.setLayout(vbox)
 
-        self.label = QLabel("welcome")
-        vbox.addWidget(self.label)
+        self.first_name = QLabel("First Name")
+        self.last_name = QLabel("Last Name")
+        self.mobile = QLabel("Mobile Number")
+        self.course = QLabel("Your Course")
+        self.address = QLabel("Your Address")
+        self.total_fees = QLabel("Total Fees")
+
+        vbox.addWidget(QLabel("USERNAME"))
+        vbox.addWidget()
+
 
 
 
 app = QApplication([])
-obj = SignupWindow()
+obj = LoginWindow()
 obj.show()
 app.exec()
