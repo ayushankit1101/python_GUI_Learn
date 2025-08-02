@@ -187,7 +187,7 @@ class WelcomeWindow(QWidget):
     def __init__(self, username):
         super().__init__()
         self.username = username
-        self.setWindowTitle("Welcome Page")
+        self.setWindowTitle("Review Page")
         self.setGeometry(150, 150, 600, 600)
         self.setStyleSheet("""
             QWidget {
