@@ -323,8 +323,7 @@ class BlankWindow(QWidget):
         self.address = QLabel("Your Address")
         self.total_fees = QLabel("Total Fees")
 
-        vbox.addWidget(QLabel("USERNAME"))
-        vbox.addWidget()
+
 
 
 

@@ -13,7 +13,8 @@ class SignupWindow(QWidget):
         self.setStyleSheet("""
             QWidget {
                 background-color: #f4f6f8;
-                font-family: 'Segoe UI';
+                
+                
                 font-size: 14px;
             }
             QLabel {
