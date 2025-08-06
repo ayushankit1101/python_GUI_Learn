@@ -1,4 +1,15 @@
 import sys
+<<<<<<< HEAD
+
+from PyQt6.QtWidgets import QWidget, QApplication
+
+
+class HomeScreen(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Home Screen")
+        self.setGeometry(0,0,1300,700)
+=======
 import mysql.connector
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QPushButton,
@@ -22,6 +33,7 @@ class LoginWindow(QWidget):
         self.setWindowTitle("Login")
         self.setFixedSize(300, 180)
         layout = QVBoxLayout()
+>>>>>>> 810a87cf1f0116ae6c4b2e538baae2ce400e0bc3
 
         self.label_user = QLabel("Username:")
         self.input_user = QLineEdit()
@@ -38,6 +50,15 @@ class LoginWindow(QWidget):
         self.button_login.clicked.connect(self.check_login)
         layout.addWidget(self.button_login)
 
+<<<<<<< HEAD
+
+
+
+app = QApplication(sys.argv)
+home = HomeScreen()
+home.show()
+sys.exit(app.exec())
+=======
         self.setLayout(layout)
 
     def check_login(self):
@@ -75,3 +96,4 @@ if __name__ == "__main__":
     login = LoginWindow()
     login.show()
     sys.exit(app.exec())
+>>>>>>> 810a87cf1f0116ae6c4b2e538baae2ce400e0bc3
