@@ -75,7 +75,7 @@ class SignupForm(QWidget):
         confirm_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         role_combo = QComboBox()
-        role_combo.addItems(["Select Role", "Student", "Professional", "Trainer"])
+        role_combo.addItems(["Select Role", "Admin", "Sales", "Trainer","Student","Marketing"])
 
         terms_check = QCheckBox("I agree to the Terms and Conditions")
 
