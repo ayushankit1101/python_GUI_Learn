@@ -5,7 +5,15 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt
 import sys
-
+# -----------------------------
+# Database configuration
+# -----------------------------
+DB_CONFIG = {
+    "host": "localhost",
+    "user": "root",
+    "password": "root@123",
+    "database": "final"
+}
 
 class SignupForm(QWidget):
     def __init__(self):
