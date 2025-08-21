@@ -121,6 +121,6 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
 app = QApplication(sys.argv)
-window = MainWindow()
+
 window.show()
 sys.exit(app.exec())
