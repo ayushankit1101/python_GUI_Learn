@@ -1,103 +1,151 @@
-import sys
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel, QLineEdit, QStackedLayout, QSizePolicy
+    QApplication, QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout,
+    QGridLayout, QScrollArea, QFrame
 )
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt
+import sys
 
+SAMPLE_IMAGE = "/mnt/data/web-app-library-categories-providers-screenshots-001-098-775-pub-canva-screenshot-1695084229.webp"
 
-class SidePanel(QWidget):
+class RoundedFrame(QFrame):
+    def __init__(self, radius=12, color="#ffffff", parent=None):
+        super().__init__(parent)
+        self.setStyleSheet(f"background-color: {color}; border-radius: {radius}px;")
+
+class TemplateCard(RoundedFrame):
+    def __init__(self, pixmap=None, title="", parent=None):
+        super().__init__(radius=10, color="#ffffff", parent=parent)
+        self.setFixedSize(180, 220)
+        v = QVBoxLayout(self)
+        v.setContentsMargins(8, 8, 8, 8)
+        v.setSpacing(6)
+
+        thumb = QLabel()
+        thumb.setFixedSize(160, 110)
+        thumb.setStyleSheet("border-radius:8px; background:#f5f5f5;")
+        if pixmap and not pixmap.isNull():
+            thumb.setPixmap(pixmap.scaled(160, 110, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+        else:
+            thumb.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            thumb.setText("No Image")
+
+        label = QLabel(title)
+        label.setWordWrap(True)
+        label.setFont(QFont("Segoe UI", 9, QFont.Weight.Medium))
+
+        v.addWidget(thumb)
+        v.addWidget(label)
+        v.addStretch()
+
+class HeroArea(RoundedFrame):
+    def __init__(self, parent=None):
+        super().__init__(radius=14, color="#6f3ce0", parent=parent)
+        self.setFixedHeight(150)
+        self.setStyleSheet(
+            "border-radius:14px; background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #2BC0E4, stop:1 #EAECC6);"
+        )
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(24, 16, 24, 16)
+        layout.setSpacing(20)
+
+        question = QLabel("What will you design?")
+        question.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
+        question.setStyleSheet("color: white;")
+        layout.addWidget(question, alignment=Qt.AlignmentFlag.AlignVCenter)
+
+        icons = [
+            ("📄", "Docs"),
+            ("🧭", "Whiteboards"),
+            ("📊", "Presentations"),
+            ("🔗", "Social media"),
+            ("🎞️", "Videos"),
+            ("🖨️", "Print"),
+            ("🌐", "Websites"),
+        ]
+        for emoji, text in icons:
+            btn = QPushButton(f"{emoji}\n{text}")
+            btn.setFixedSize(80, 80)
+            btn.setFont(QFont("Segoe UI", 9))
+            btn.setStyleSheet(
+                "QPushButton{background: rgba(255,255,255,0.15); border-radius:8px; color: white;}"
+                "QPushButton::hover{background: rgba(255,255,255,0.25);}"
+            )
+            btn.setFlat(True)
+            layout.addWidget(btn)
+
+class TopBar(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        h = QHBoxLayout(self)
+        h.setContentsMargins(12, 12, 12, 12)
+
+        logo = QLabel("<span style='color:#2BC0E4; font-weight:700; font-size:20pt'>Can</span><span style='color:#6f3ce0; font-weight:700; font-size:20pt'>va</span>")
+        logo.setTextFormat(Qt.TextFormat.RichText)
+        h.addWidget(logo)
+        h.addStretch()
+
+        btn_upload = QPushButton("Upload")
+        btn_upload.setStyleSheet("background:#f3f3f3; padding:6px 12px; border-radius:8px;")
+
+        btn_create = QPushButton("Create a design")
+        btn_create.setStyleSheet("background:#6f3ce0; color:white; padding:8px 14px; border-radius:8px;")
+        btn_create.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
+
+        h.addWidget(btn_upload)
+        h.addWidget(btn_create)
+
+class MainWindow(QScrollArea):
     def __init__(self):
         super().__init__()
-        self.logged_in = False
-        self.init_ui()
+        self.setWindowTitle("Canva — Professional UI Mockup with Gradient Background")
+        self.resize(1100, 780)
+        self.setWidgetResizable(True)
 
-    def init_ui(self):
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        container = QWidget()
+        self.setWidget(container)
+        container.setStyleSheet(
+            "background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #fdfbfb, stop:1 #ebedee);"
+        )
 
-        # Login widgets
-        self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("Enter your name")
-        self.login_button = QPushButton("Login")
-        self.login_button.clicked.connect(self.do_login)
+        main_layout = QVBoxLayout(container)
+        main_layout.setContentsMargins(18, 18, 18, 18)
+        main_layout.setSpacing(12)
 
-        self.layout.addWidget(QLabel("Profile"))
-        self.layout.addWidget(self.name_input)
-        self.layout.addWidget(self.login_button)
+        main_layout.addWidget(TopBar())
+        main_layout.addWidget(HeroArea())
 
-        # Profile widgets (hidden initially)
-        self.name_label = QLabel()
-        self.details_label = QLabel("More user info here.")
-        self.layout.addWidget(self.name_label)
-        self.layout.addWidget(self.details_label)
+        grid_layout = QGridLayout()
+        grid_layout.setContentsMargins(8, 8, 8, 8)
+        grid_layout.setHorizontalSpacing(18)
+        grid_layout.setVerticalSpacing(18)
 
-        self.name_label.hide()
-        self.details_label.hide()
+        sample = QPixmap()
+        if not sample.load(SAMPLE_IMAGE):
+            sample = None
 
-    def do_login(self):
-        name = self.name_input.text().strip()
-        if name:
-            self.name_label.setText(f"Hello, {name}")
-            self.name_input.hide()
-            self.login_button.hide()
-            self.name_label.show()
-            self.details_label.show()
-            self.logged_in = True
+        titles = [
+            "Team Sync — Weekly Doc",
+            "Marketing Team — Weekly Sync",
+            "Worksite Survey Research",
+            "Social Media Report",
+            "User Visa & Co.",
+            "Meal Planner",
+            "Peter's Dream Home",
+            "Goal Tracker",
+        ]
 
+        for i, title in enumerate(titles):
+            r, c = divmod(i, 4)
+            grid_layout.addWidget(TemplateCard(sample, title), r, c)
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Home Screen")
-        self.setGeometry(100, 100, 900, 600)
+        main_layout.addLayout(grid_layout)
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
-
-        self.main_layout = QHBoxLayout()
-        self.central_widget.setLayout(self.main_layout)
-
-        # Side Panel
-        self.side_panel = SidePanel()
-        self.side_panel.setFixedWidth(200)
-        self.side_panel.setVisible(False)
-        self.main_layout.addWidget(self.side_panel)
-
-        # Main Content
-        self.main_content = QWidget()
-        self.main_content_layout = QVBoxLayout()
-        self.main_content.setLayout(self.main_content_layout)
-
-        # Top bar with toggle button and company name
-        self.top_bar = QHBoxLayout()
-        self.toggle_button = QPushButton("☰")
-        self.toggle_button.setFixedWidth(40)
-        self.toggle_button.clicked.connect(self.toggle_side_panel)
-        self.company_label = QLabel("Awesome Company")
-        self.company_label.setStyleSheet("font-size: 20px; font-weight: bold;")
-
-        self.top_bar.addWidget(self.toggle_button)
-        self.top_bar.addStretch()
-        self.top_bar.addWidget(self.company_label)
-        self.top_bar.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-
-        # Welcome Text
-        self.welcome_label = QLabel("Welcome to the Dashboard")
-        self.welcome_label.setStyleSheet("font-size: 24px; padding-top: 20px;")
-
-        self.main_content_layout.addLayout(self.top_bar)
-        self.main_content_layout.addWidget(self.welcome_label)
-        self.main_content_layout.addStretch()
-
-        self.main_layout.addWidget(self.main_content)
-
-    def toggle_side_panel(self):
-        self.side_panel.setVisible(not self.side_panel.isVisible())
-
-
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    w = MainWindow()
+    w.show()
     sys.exit(app.exec())
+
+if __name__ == '__main__':
+    main()

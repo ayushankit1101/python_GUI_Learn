@@ -316,20 +316,7 @@ class BlankWindow(QWidget):
         vbox = QVBoxLayout()
         self.setLayout(vbox)
 
-<<<<<<< HEAD
-        self.first_name = QLabel("First Name")
-        self.last_name = QLabel("Last Name")
-        self.mobile = QLabel("Mobile Number")
-        self.course = QLabel("Your Course")
-        self.address = QLabel("Your Address")
-        self.total_fees = QLabel("Total Fees")
 
-
-
-=======
-        self.label = QLabel("welcome")
-        vbox.addWidget(self.label)
->>>>>>> 810a87cf1f0116ae6c4b2e538baae2ce400e0bc3
 
 
 
