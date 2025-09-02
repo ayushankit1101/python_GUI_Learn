@@ -9,6 +9,8 @@ from PyQt6.QtGui import QPixmap, QPainter, QColor, QFont
 from PyQt6.QtCore import Qt, QSize
 import sys
 
+
+
 # --------------------------
 # Helper: Generate course logo placeholder with text & icon-like style
 # --------------------------

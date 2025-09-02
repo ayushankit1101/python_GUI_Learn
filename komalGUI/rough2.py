@@ -101,6 +101,10 @@ class InstituteWelcome(QWidget):
         main_layout.addWidget(scroll)
 
 
+
+
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = InstituteWelcome()

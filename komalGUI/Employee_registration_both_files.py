@@ -564,7 +564,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central)
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+
     app.setFont(DEFAULT_FONT)
     win = MainWindow()
     win.show()
