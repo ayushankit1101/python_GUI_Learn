@@ -258,6 +258,6 @@ class LoginWindow(QWidget):
 
 
 app = QApplication([])
-
+obj = SignupWindow()
 obj.show()
 app.exec()
