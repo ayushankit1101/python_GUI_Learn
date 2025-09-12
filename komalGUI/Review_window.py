@@ -288,7 +288,7 @@ class WelcomeWindow(QWidget):
                 self.login.show()
                 self.close()
             except Exception as e:
-                QMessageBox.critical(self, "Delete Error", str(e))
+
 
 
 if __name__ == '__main__':
