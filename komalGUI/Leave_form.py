@@ -100,7 +100,7 @@ class LeaveForm(QWidget):
             self.message.clear()
 
         except Exception as e:
-            QMessageBox.critical(self, "Database Error", str(e))
+
 
     def format_date(self, day_cb, month_cb, year_cb):
         day = int(day_cb.currentText())
